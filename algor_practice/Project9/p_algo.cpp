@@ -46,6 +46,23 @@ void Bubble_sort(int *arr, int arr_size) {
 	}
 }
 
+void insert_sort(int *arr, int arr_size) {
+	int temp;
+	for (int a = 1; a < arr_size; a++) {
+		for (int b = a; b > 0; b--) {
+			if (arr[b] < arr[b - 1]) {
+				temp = arr[b];
+				arr[b] = arr[b - 1];
+				arr[b - 1] = temp;
+			}
+		}
+
+		for (int c = 0; c <= a; c++) {
+			std::cout << arr[c] << " ";
+		}
+		std::cout << std::endl;
+	}
+}
 
 int main() {
 
@@ -53,8 +70,8 @@ int main() {
 	int arr_size = 8;
 
 //	Selection_sort(arr, arr_size);
-	Bubble_sort(arr, arr_size);
-
+//	Bubble_sort(arr, arr_size);
+	insert_sort(arr, arr_size);
 	for (int i = 0; i < arr_size; i++) {
 		std::cout << arr[i] << " ";
 	}
