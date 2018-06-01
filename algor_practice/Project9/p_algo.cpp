@@ -92,17 +92,48 @@ void shell_sort(int *arr, int arr_size) {
 		}
 		std::cout << std::endl;
 	} while (h > 1);
-
 }
-int main() {
 
-	int arr[15] = { 30, 20, 40, 10, 5, 10, 30, 15 , 27, 35, 80, 22, 12, 5, 29};
+int partition(int *arr, int left, int right) {
+
+	int center = left; int temp = arr[center];
+	int swap_temp;
+	do {
+		do {} while (arr[++left] < temp);
+		do {} while (arr[--right] > temp);
+		
+		if (left < right){
+			swap_temp = arr[left];
+			arr[left] = arr[right];
+			arr[right] = swap_temp;
+		}
+		else {
+			break;
+		}
+	} while (true);
+	arr[center] = arr[right];
+	arr[right] = temp;
+	return right;
+}
+void quicksort(int *arr, int left, int right) {
+	int p_num;
+	if (right > left) {
+		p_num = partition(arr, left, right + 1);
+		std::cout << p_num << std::endl;
+		quicksort(arr, left, p_num - 1);
+		quicksort(arr, p_num + 1, right);
+	}
+}
+
+int main() {
+	int arr[15] = { 30, 20, 40, 10, 5, 10,30, 15 , 27, 35, 80, 22, 12, 5, 29};
 	int arr_size = 15;
 
 //	Selection_sort(arr, arr_size);
 //	Bubble_sort(arr, arr_size);
 //	insert_sort(arr, arr_size);
-	shell_sort(arr, arr_size);
+//	shell_sort(arr, arr_size);
+	quicksort(arr, 0, arr_size - 1);
 	for (int i = 0; i < arr_size; i++) {
 		std::cout << arr[i] << " ";
 	}
