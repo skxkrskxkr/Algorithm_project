@@ -3,10 +3,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "merge.h"
 #include <math.h>
 #include <time.h>
-#include <list>
+#include <vector>
+#include "well512.h"
+
+
 class pre_rank_bwt {  //같은 문자의경우 a1,a2 rank로 구별 , arrange_number 등 필요한 정보를 가지고있는 자료구조
 public:
 	std::string bwt; std::string pre_bwt; std::string original_sequence;
@@ -15,39 +17,38 @@ public:
 	std::vector<int> bwt_path; // 이 문자가 pre_rank어디에있는지 나타내는 번호
 	std::vector<int> arrange_number;
 
-	std::vector<float> use_merge;
+
 
 	std::string m_bwt(std::string abc) { //bwt 생성함수
 		int ar_temp;
-		std::string *bwt_array = new std::string[abc.length()];
-		std::string temp; std::string bwt = "";
-	
-		for (int i = 0; i < abc.length(); i++) {
-			bwt_array[i] = abc.substr(abc.length() - 1 - i) + abc.substr(0, abc.length() - 1 - i);
-			arrange_number.push_back(abc.length()-1 -i);
+		std::ofstream bwt_pre_sort("bwt_pre_sort_a.txt");
+		std::ofstream bwt_pre_sort2("bwt_pre_sort_c.txt");
+		std::ofstream bwt_pre_sort3("bwt_pre_sort_g.txt");
+		std::ofstream bwt_pre_sort4("bwt_pre_sort_t.txt");
 
-			for (int k = 0; k < bwt_array[i].length(); k++) {
-				if (bwt_array[i][k] == '$') {
-					use_merge[i] = use_merge[i] * 10 + 1;
-				}
-				else if (bwt_array[i][k] == 'A') {
-					use_merge[i] = use_merge[i] * 10 + 2;
-				}
-				else if (bwt_array[i][k] == 'C') {
-					use_merge[i] = use_merge[i] * 10 + 3;
-				}
-				else if (bwt_array[i][k] == 'G') {
-					use_merge[i] = use_merge[i] * 10 + 4;
-				}
-				else if (bwt_array[i][k] == 'T') {
-					use_merge[i] = use_merge[i] * 10 + 5;
-				}
-			}
-		//	std::cout << use_merge[i] << std::endl;
+		//std::string *bwt_array = new std::string[abc.length()];
+		std::string temp; std::string bwt = "";
+		
+	//	std::cout << abc.length() << std::endl;
+		for (int i = 0; i < abc.length(); i++) {
+
+			if (abc.substr(abc.length() - 1 - i)[0] == '$' || abc.substr(abc.length() - 1 - i)[0] == 'A')
+				bwt_pre_sort << i << " " << abc.substr(abc.length() - 1 - i).substr(0, 60) << " " << abc.substr(0, abc.length() - 1 - i).substr(abc.substr(0, abc.length() - 1 - i).size() - 1, abc.substr(0, abc.length() - 1 - i).size())[0] << '\n';
+			if (abc.substr(abc.length() - 1 - i)[0] == 'C')
+				bwt_pre_sort2 << i << " " << abc.substr(abc.length() - 1 - i).substr(0, 60) << " " << abc.substr(0, abc.length() - 1 - i).substr(abc.substr(0, abc.length() - 1 - i).size() - 1, abc.substr(0, abc.length() - 1 - i).size())[0] << '\n';
+			if (abc.substr(abc.length() - 1 - i)[0] == 'G')
+				bwt_pre_sort3 << i << " " << abc.substr(abc.length() - 1 - i).substr(0, 60) << " " << abc.substr(0, abc.length() - 1 - i).substr(abc.substr(0, abc.length() - 1 - i).size() - 1, abc.substr(0, abc.length() - 1 - i).size())[0] << '\n';
+			if (abc.substr(abc.length() - 1 - i)[0] == 'T')
+				bwt_pre_sort4 << i << " " << abc.substr(abc.length() - 1 - i).substr(0, 60) << " " << abc.substr(0, abc.length() - 1 - i).substr(abc.substr(0, abc.length() - 1 - i).size() - 1, abc.substr(0, abc.length() - 1 - i).size())[0] << '\n';
+
 		}
 
-		std::cout << std::endl;
-		// 여기를 머지소트로 바꿔야함
+		std::cout << "생성 종료" <<std::endl;
+		bwt_pre_sort.close();
+		bwt_pre_sort2.close();
+		bwt_pre_sort3.close();
+		bwt_pre_sort4.close();
+
 		//int a, b, c;
 		//for (a = 0; a < abc.length() - 1; a++) {
 		//	for (b = 0, c = 0; b < abc.length() - 1 - a; b++) {  //앞자리가 같은경우 뒷자리 비교를 위해 b, c 변수 2개 사용
@@ -66,17 +67,13 @@ public:
 		//		}
 		//	}
 		//}
-		
-		MergeSort( 0, use_merge.size() - 1, use_merge, bwt_array);
-		//for (int i = 0; i < use_merge.size(); i++) {
-		//	std::cout << use_merge[i] << std::endl;
-		//}
-		for (int i = 0; i < abc.length(); i++) {
-	//		std::cout << bwt_array[i] << std::endl;
+	//	
+	//	for (int i = 0; i < abc.length(); i++) {
+	////		std::cout << bwt_array[i] << std::endl;
 
-			pre_bwt.push_back(bwt_array[i][0]);
-			bwt.push_back(bwt_array[i][abc.length() - 1]);
-		}
+	//		pre_bwt.push_back(bwt_array[i][0]);
+	//		bwt.push_back(bwt_array[i][abc.length() - 1]);
+	//	}
 
 		//
 
@@ -97,26 +94,25 @@ public:
 		pre_rank.assign(T.length(), 0); //0의 값으로 초기화
 		bwt_rank.assign(T.length(), 0);
 		bwt_path.assign(T.length(), 0);
-		use_merge.assign(T.length(), 0);
 
 
 		bwt = m_bwt(T); //bwt 생성 pre_bwt도 같이 생성됨
 
 
-		for (int i = 0; i < T.length() - 1; i++) { //rank number
-			if (pre_bwt[i] == pre_bwt[i + 1]) {
-				pre_rank[i + 1] = pre_rank[i] + 1;
-			}
-		}
-		int rank_num = 0;
-		for (int a = 0; a < T.length(); a++) {
-			for (int i = a + 1; i < T.length(); i++) {
-				if (bwt[a] == bwt[i] && bwt_rank[i] == 0) {
-					bwt_rank[i] = ++rank_num;
-				}
-			}
-			rank_num = 0;
-		}
+		//for (int i = 0; i < T.length() - 1; i++) { //rank number
+		//	if (pre_bwt[i] == pre_bwt[i + 1]) {
+		//		pre_rank[i + 1] = pre_rank[i] + 1;
+		//	}
+		//}
+		//int rank_num = 0;
+		//for (int a = 0; a < T.length(); a++) {
+		//	for (int i = a + 1; i < T.length(); i++) {
+		//		if (bwt[a] == bwt[i] && bwt_rank[i] == 0) {
+		//			bwt_rank[i] = ++rank_num;
+		//		}
+		//	}
+		//	rank_num = 0;
+		//}
 	//	std::cout << std::endl;
 	//	std::cout << "bwt = " << bwt << std::endl;
 
@@ -200,7 +196,7 @@ int main() {
 	pre_rank_bwt in_bwt(T); // bwt 생성
 
 
-	in_bwt.make_out_file();
+	//in_bwt.make_out_file();
 
 	end_time = (double)(clock() - p_time) / CLOCKS_PER_SEC; // 총 작업시간 체크
 	std::cout << "끝난시간은 " << end_time << "초 입니다." << std::endl; // 작업시간 출력
